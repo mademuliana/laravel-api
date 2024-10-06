@@ -1,4 +1,4 @@
-# ![Laravel-API](logo.png)
+# !Laravel-API
 
 > ### Laravel-api that contain basic function for book management (CRUD, auth, advanced patterns and more).
 
