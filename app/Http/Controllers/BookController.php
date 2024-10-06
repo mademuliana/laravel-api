@@ -29,27 +29,14 @@ class BookController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      */
     public function store(StoreBookRequest $request)
     {
-        $details =[
-            'title' => $request->title,
-            'description' => $request->description,
-            'publish_date' => $request->publish_date,
-            'author_id' => $request->author_id,
-        ];
+        $validatedData = $request->validated();
         DB::beginTransaction();
         try{
-             $Book = $this->BookRepositoryInterface->store($details);
+             $Book = $this->BookRepositoryInterface->store($validatedData);
 
              DB::commit();
              return ApiResponse::sendResponse(new BookResource($Book),'Book Create Successful',201);
@@ -65,7 +52,6 @@ class BookController extends Controller
     public function show($id)
     {
         $Book = $this->BookRepositoryInterface->getById($id);
-        // dd($Book);`
         return ApiResponse::sendResponse(new BookResource($Book),'',200);
     }
 
@@ -75,28 +61,18 @@ class BookController extends Controller
         return ApiResponse::sendResponse(BookResource::collection($Book),'',200);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Book $Book)
-    {
-        //
-    }
+
 
     /**
      * Update the specified resource in storage.
      */
     public function update(UpdateBookRequest $request, $id)
     {
-        $updateDetails =[
-            'title' => $request->title,
-            'description' => $request->description,
-            'publish_date' => $request->publish_date,
-            'author_id' => $request->author_id,
-        ];
+        $validatedData = $request->validated();
+
         DB::beginTransaction();
         try{
-             $Book = $this->BookRepositoryInterface->update($updateDetails,$id);
+             $this->BookRepositoryInterface->update($validatedData,$id);
 
              DB::commit();
              return ApiResponse::sendResponse('Book Update Successful','',201);

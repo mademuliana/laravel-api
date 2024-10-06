@@ -1,10 +1,8 @@
-# ![Laravel Example App](logo.png)
+# ![Laravel-API](logo.png)
 
-[![Build Status](https://img.shields.io/travis/gothinkster/laravel-realworld-example-app/master.svg)](https://travis-ci.org/gothinkster/laravel-realworld-example-app) [![Gitter](https://img.shields.io/gitter/room/realworld-dev/laravel.svg)](https://gitter.im/realworld-dev/laravel) [![GitHub stars](https://img.shields.io/github/stars/gothinkster/laravel-realworld-example-app.svg)](https://github.com/gothinkster/laravel-realworld-example-app/stargazers) [![GitHub license](https://img.shields.io/github/license/gothinkster/laravel-realworld-example-app.svg)](https://raw.githubusercontent.com/gothinkster/laravel-realworld-example-app/master/LICENSE)
+> ### Laravel-api that contain basic function for book management (CRUD, auth, advanced patterns and more).
 
-> ### Example Laravel codebase containing real world examples (CRUD, auth, advanced patterns and more) that adheres to the [RealWorld](https://github.com/gothinkster/realworld-example-apps) spec and API.
-
-This repo is functionality complete — PRs and issues welcome!
+This repo is functionality complete — Questions and criticism are very welcome!
 
 ----------
 
@@ -12,17 +10,15 @@ This repo is functionality complete — PRs and issues welcome!
 
 ## Installation
 
-Please check the official laravel installation guide for server requirements before you start. [Official Documentation](https://laravel.com/docs/5.4/installation#installation)
-
-Alternative installation is possible without local dependencies relying on [Docker](#docker). 
+Please check the official laravel installation guide for server requirements before you start. [Official Documentation](https://laravel.com/docs/11.x/installation)
 
 Clone the repository
 
-    git clone git@github.com:gothinkster/laravel-realworld-example-app.git
+    git clone https://github.com/mademuliana/laravel-api.git
 
 Switch to the repo folder
 
-    cd laravel-realworld-example-app
+    cd laravel-api
 
 Install all the dependencies using composer
 
@@ -32,44 +28,16 @@ Copy the example env file and make the required configuration changes in the .en
 
     cp .env.example .env
 
-Generate a new application key
 
-    php artisan key:generate
-
-Generate a new JWT authentication secret key
-
-    php artisan jwt:generate
-
+**Make sure you set the correct database connection information before running the migrations**
 Run the database migrations (**Set the database connection in .env before migrating**)
 
     php artisan migrate
 
-Start the local development server
 
-    php artisan serve
-
-You can now access the server at http://localhost:8000
-
-**TL;DR command list**
-
-    git clone git@github.com:gothinkster/laravel-realworld-example-app.git
-    cd laravel-realworld-example-app
-    composer install
-    cp .env.example .env
-    php artisan key:generate
-    php artisan jwt:generate 
-    
-**Make sure you set the correct database connection information before running the migrations** [Environment variables](#environment-variables)
-
-    php artisan migrate
-    php artisan serve
-
-## Database seeding
-
-**Populate the database with seed data with relationships which includes users, articles, comments, tags, favorites and follows. This can help you to quickly start testing the api or couple a frontend and start using it with ready content.**
-
-Open the DummyDataSeeder and set the property values as per your requirement
-
+**Populate the database with seed data. This can help you to quickly start testing the api or start using it with ready content. And avoid to use manual/db/eloquent insertion for table that doesn't have default value. Always use factory to populate that kind table**  
+Open the DummyDataSeeder and set the factory you want to run 
+  
     database/seeds/DummyDataSeeder.php
 
 Run the database seeder and you're done
@@ -79,107 +47,79 @@ Run the database seeder and you're done
 ***Note*** : It's recommended to have a clean database before seeding. You can refresh your migrations at any point to clean the database by running the following command
 
     php artisan migrate:refresh
-    
-## Docker
 
-To install with [Docker](https://www.docker.com), run following commands:
+Start the local development server
 
-```
-git clone git@github.com:gothinkster/laravel-realworld-example-app.git
-cd laravel-realworld-example-app
-cp .env.example.docker .env
-docker run -v $(pwd):/app composer install
-cd ./docker
-docker-compose up -d
-docker-compose exec php php artisan key:generate
-docker-compose exec php php artisan jwt:generate
-docker-compose exec php php artisan migrate
-docker-compose exec php php artisan db:seed
-docker-compose exec php php artisan serve --host=0.0.0.0
-```
+    php artisan serve
 
-The api can be accessed at [http://localhost:8000/api](http://localhost:8000/api).
+You can now access the server at http://localhost:8000
+**Use BookManagement.postman_collection.json for pre-made mappings to hit the endpoint, and don’t forget to configure the environment, especially the {{base_url}} variable, to ensure it functions properly.**
 
-## API Specification
+## Database seeding
 
-This application adheres to the api specifications set by the [Thinkster](https://github.com/gothinkster) team. This helps mix and match any backend with any other frontend without conflicts.
 
-> [Full API Spec](https://github.com/gothinkster/realworld/tree/master/api)
 
-More information regarding the project can be found here https://github.com/gothinkster/realworld
+## Testing
 
-----------
+this project already implement phpunit framework, run this command to run the test case
+
+    php artisan test
+    php artisan test --filter <class>
+    php artisan test --filter <class>::<<function>>
+
+### Testing function
+
+testing function
+| **function** 	                                     | **class**            | **expected value**  |
+|----------------------------------------------------|----------------------|---------------------|
+| can get all author                                 | AuthorTest           | yes/true            | 
+| can get single author                              | AuthorTest           | yes/true            |
+| can create author                                  | AuthorTest           | yes/true            |
+| can update author                                  | AuthorTest           | yes/true            |
+| can delete author                                  | AuthorTest           | yes/true            |
+| create author fails when all fields are missing    | AuthorValidationTest | yes/true            |
+| create author fails when name is missing           | AuthorValidationTest | yes/true            |
+| create author fails when name is empty name        | AuthorValidationTest | yes/true            |
+| author validation fails with invalid date          | AuthorValidationTest | yes/true            |
+| author validation fails with future date           | AuthorValidationTest | yes/true            |
+| author validation passes with valid data           | AuthorValidationTest | yes/true            |
+| can get all books                                  | bookTest             | yes/true            |
+| can get single book                                | bookTest             | yes/true            |
+| can create book                                    | bookTest             | yes/true            |
+| can update book                                    | bookTest             | yes/true            |
+| can delete book                                    | bookTest             | yes/true            |
+| create book fails when all fields are              | bookValidationTest   | yes/true            |
+| create book fails when title is                    | bookValidationTest   | yes/true            |
+| create book fails when author id is                | bookValidationTest   | yes/true            |
+| create book fails when title is empty              | bookValidationTest   | yes/true            |
+| book validation fails with invalid                 | bookValidationTest   | yes/true            |
+| book validation fails with future                  | bookValidationTest   | yes/true            |
+| book validation fails with invalid author id       | bookValidationTest   | yes/true            |
+| book validation passes with valid data             | bookValidationTest   | yes/true            |
 
 # Code overview
-
-## Dependencies
-
-- [jwt-auth](https://github.com/tymondesigns/jwt-auth) - For authentication using JSON Web Tokens
-- [laravel-cors](https://github.com/barryvdh/laravel-cors) - For handling Cross-Origin Resource Sharing (CORS)
-
-## Folders
-
-- `app` - Contains all the Eloquent models
-- `app/Http/Controllers/Api` - Contains all the api controllers
-- `app/Http/Middleware` - Contains the JWT auth middleware
-- `app/Http/Requests/Api` - Contains all the api form requests
-- `app/RealWorld/Favorite` - Contains the files implementing the favorite feature
-- `app/RealWorld/Filters` - Contains the query filters used for filtering api requests
-- `app/RealWorld/Follow` - Contains the files implementing the follow feature
-- `app/RealWorld/Paginate` - Contains the pagination class used to paginate the result
-- `app/RealWorld/Slug` - Contains the files implementing slugs to articles
-- `app/RealWorld/Transformers` - Contains all the data transformers
-- `config` - Contains all the application configuration files
-- `database/factories` - Contains the model factory for all the models
-- `database/migrations` - Contains all the database migrations
-- `database/seeds` - Contains the database seeder
-- `routes` - Contains all the api routes defined in api.php file
-- `tests` - Contains all the application tests
-- `tests/Feature/Api` - Contains all the api tests
+## Structure
+- `app`- Core application logic and structure.
+- `app/Http/Controllers/` - Handle incoming requests and responses.
+- `app/Http/Classes/` - Custom classes for business logic.
+- `app/Http/Requests/` - Validate incoming request data.
+- `app/Http/Resources/` - Transform models for API responses.
+- `app/Interfaces/` - Define contracts for services and repositories.
+- `app/Models/` - Eloquent models representing database entities.
+- `app/Providers/` - Register application services and configurations.
+- `app/Repositories/` - Data access layer for models.
+- `database/factories/` - Generate test data for models.
+- `database/migrations/` - Manage database schema changes.
+- `database/seeds` - Populate database with initial data.
+- `routes` - Define application route handling.
+- `tests` - Automated tests for application functionality.
+- `tests/Feature` - Test the application's features and endpoints.
 
 ## Environment variables
 
 - `.env` - Environment variables can be set in this file
+- `.env.testing` - Environment variables for testing can be set in this file
 
 ***Note*** : You can quickly set the database information and other variables in this file and have the application fully working.
 
-----------
 
-# Running API
-
-Run the laravel development server
-
-    php artisan serve
-
-The api can now be accessed at
-
-    http://localhost:8000/api
-
-Request headers
-
-| **Required** 	| **Key**              	| **Value**            	|
-|----------	|------------------	|------------------	|
-| Yes      	| Content-Type     	| application/json 	|
-| Yes      	| X-Requested-With 	| XMLHttpRequest   	|
-| Optional 	| Authorization    	| Token {JWT}      	|
-
-Refer the [api specification](#api-specification) for more info.
-
-----------
- 
-# Authentication
- 
-This applications uses JSON Web Token (JWT) to handle authentication. The token is passed with each request using the `Authorization` header with `Token` scheme. The JWT authentication middleware handles the validation and authentication of the token. Please check the following sources to learn more about JWT.
- 
-- https://jwt.io/introduction/
-- https://self-issued.info/docs/draft-ietf-oauth-json-web-token.html
-
-----------
-
-# Cross-Origin Resource Sharing (CORS)
- 
-This applications has CORS enabled by default on all API endpoints. The default configuration allows requests from `http://localhost:3000` and `http://localhost:4200` to help speed up your frontend testing. The CORS allowed origins can be changed by setting them in the config file. Please check the following sources to learn more about CORS.
- 
-- https://developer.mozilla.org/en-US/docs/Web/HTTP/Access_control_CORS
-- https://en.wikipedia.org/wiki/Cross-origin_resource_sharing
-- https://www.w3.org/TR/cors

@@ -29,26 +29,14 @@ class AuthorController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      */
     public function store(StoreAuthorRequest $request)
     {
-        $details =[
-            'name' => $request->name,
-            'bio' => $request->bio,
-            'birth_date' => $request->birth_date
-        ];
+        $validatedData = $request->validated();
         DB::beginTransaction();
         try{
-             $Author = $this->AuthorRepositoryInterface->store($details);
+             $Author = $this->AuthorRepositoryInterface->store($validatedData);
 
              DB::commit();
              return ApiResponse::sendResponse(new AuthorResource($Author),'Author Create Successful',201);
@@ -68,27 +56,16 @@ class AuthorController extends Controller
         return ApiResponse::sendResponse(new AuthorResource($Author),'',200);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Author $Author)
-    {
-        //
-    }
 
     /**
      * Update the specified resource in storage.
      */
     public function update(UpdateAuthorRequest $request, $id)
     {
-        $updateDetails =[
-            'name' => $request->name,
-            'bio' => $request->bio,
-            'birth_date' => $request->birth_date
-        ];
+        $validatedData = $request->validated();
         DB::beginTransaction();
         try{
-             $Author = $this->AuthorRepositoryInterface->update($updateDetails,$id);
+             $this->AuthorRepositoryInterface->update($validatedData,$id);
 
              DB::commit();
              return ApiResponse::sendResponse('Author Update Successful','',201);
@@ -105,6 +82,6 @@ class AuthorController extends Controller
     {
          $this->AuthorRepositoryInterface->delete($id);
 
-        return ApiResponse::sendResponse('Author Delete Successful','',204);
+        return ApiResponse::sendResponse('','Author Delete Successful',204);
     }
 }

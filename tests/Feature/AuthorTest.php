@@ -74,11 +74,11 @@ class AuthorTest extends TestCase
         $this->assertDatabaseHas('authors', $updateData);
     }
 
-    // public function test_can_delete_author()
-    // {
-    //     $author = Author::factory()->create();
-    //     $response = $this->deleteJson("/api/authors/{$author->id}");
-    //     $response->assertStatus(204);
-    //     $this->assertDatabaseMissing('authors', ['id' => $author->id]);
-    // }
+    public function test_can_delete_author()
+    {
+        $author = Author::factory()->create();
+        $response = $this->deleteJson("/api/authors/{$author->id}");
+        $response->assertStatus(204);
+        $this->assertDatabaseMissing('authors', ['id' => $author->id]);
+    }
 }

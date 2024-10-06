@@ -24,19 +24,15 @@ class StoreBookRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'title' => 'required',
-            'description' => 'required',
-            'publish_date' => 'required',
-            'author_id' => 'required',
+            'title' => 'required|string|max:225',
+            'description' => 'nullable|string|min:10',
+            'publish_date' => 'nullable|date|before_or_equal:today',
+            'author_id' => 'required|exists:authors,id',
         ];
     }
 
     public function failedValidation(Validator $validator)
     {
-        throw new HttpResponseException(response()->json([
-            'success'   => false,
-            'message'   => 'Validation errors',
-            'data'      => $validator->errors()
-        ]));
+        return response()->json($validator->errors(), 422);
     }
 }

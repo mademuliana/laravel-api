@@ -24,18 +24,14 @@ class StoreAuthorRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required',
-            'bio' => 'required',
-            'birth_date' => 'required'
+            'name' => 'required|string|max:225',
+            'bio' => 'nullable|string|min:10',
+            'birth_date' => 'nullable|date|before_or_equal:today'
         ];
     }
 
     public function failedValidation(Validator $validator)
     {
-        throw new HttpResponseException(response()->json([
-            'success'   => false,
-            'message'   => 'Validation errors',
-            'data'      => $validator->errors()
-        ]));
+        return response()->json($validator->errors(), 422);
     }
 }
