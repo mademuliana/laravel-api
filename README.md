@@ -1,4 +1,4 @@
-# ![Laravel-API](logo.png)
+# ![Laravel-API]
 
 > ### Laravel-api that contain basic function for book management (CRUD, auth, advanced patterns and more).
 
@@ -28,14 +28,12 @@ Copy the example env file and make the required configuration changes in the .en
 
     cp .env.example .env
 
-
-**Make sure you set the correct database connection information before running the migrations**
 Run the database migrations (**Set the database connection in .env before migrating**)
 
     php artisan migrate
 
+**Make sure you set the correct database connection information before running the migrations**
 
-**Populate the database with seed data. This can help you to quickly start testing the api or start using it with ready content. And avoid to use manual/db/eloquent insertion for table that doesn't have default value. Always use factory to populate that kind table**  
 Open the DummyDataSeeder and set the factory you want to run 
   
     database/seeds/DummyDataSeeder.php
@@ -43,6 +41,8 @@ Open the DummyDataSeeder and set the factory you want to run
 Run the database seeder and you're done
 
     php artisan db:seed
+
+**Populate the database with seed data. This can help you to quickly start testing the api or start using it with ready content. And avoid to use manual/db/eloquent insertion for table that doesn't have default value. Always use factory to populate that kind table**  
 
 ***Note*** : It's recommended to have a clean database before seeding. You can refresh your migrations at any point to clean the database by running the following command
 
@@ -53,11 +53,8 @@ Start the local development server
     php artisan serve
 
 You can now access the server at http://localhost:8000
+
 **Use BookManagement.postman_collection.json for pre-made mappings to hit the endpoint, and don’t forget to configure the environment, especially the {{base_url}} variable, to ensure it functions properly.**
-
-## Database seeding
-
-
 
 ## Testing
 
